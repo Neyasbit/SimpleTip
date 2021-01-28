@@ -1,7 +1,11 @@
 package com.example.simpletip
 
+import android.content.Context
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.InputMethod
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import com.example.simpletip.databinding.ActivityMainBinding
 import java.text.NumberFormat
@@ -14,8 +18,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //find and added listener for button
+        //find and added listener for a button
         binding.calculateButton.setOnClickListener { calculateTip() }
+        //set listener for the editText
+        binding.costOfServiceEditText.setOnKeyListener { view, keyCode, _ -> handleKeyEvent(view, keyCode)}
         //check bundle values
         if (savedInstanceState != null) {
             //check save visibility a value
@@ -59,7 +65,17 @@ class MainActivity : AppCompatActivity() {
         //set result value
         binding.tipResult.text = getString(R.string.tip_amount, formatedTip)
     }
-
+    //fun for hide the keyboard
+    private fun handleKeyEvent(view: View, keyCode: Int): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_ENTER) {
+            //hide the keyboard
+            val inputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+            return true
+        }
+        return false
+    }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         //check value for save, if textView is a visibility, means can save it
