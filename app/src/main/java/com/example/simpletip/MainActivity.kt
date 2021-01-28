@@ -32,17 +32,15 @@ class MainActivity : AppCompatActivity() {
         val stringInTextField = binding.costOfService.text.toString()
         //get cost a value with null, cuz user can will enter empty a value
         val cost = stringInTextField.toDoubleOrNull()
-        //get checked radiobutton
-        val selectedId = binding.tipOptions.checkedRadioButtonId
-        //return percent value
-        val tipPercentage = when (selectedId) {
+        //return percent value and checked radiobutton
+        val tipPercentage = when (binding.tipOptions.checkedRadioButtonId) {
             R.id.option_twenty_percent -> 0.2
             R.id.option_eighteen_percent -> 0.18
             else -> 0.15
         }
-        //calculated tip
-        if (cost == null) {
-            binding.tipResult.text = ""
+        //if the cost is null or 0, then display 0 tip and exit this function early
+        if (cost == null || cost == 0.0) {
+            displayTip(0.0)
             return
         }
         //check round value
@@ -52,6 +50,9 @@ class MainActivity : AppCompatActivity() {
         binding.tipResult.visibility = View.VISIBLE
         if (roundUp)
             tip = ceil(tip)
+        displayTip(tip)
+    }
+    private fun displayTip(tip: Double) {
         //get formated value
         val formatedTip = NumberFormat.getCurrencyInstance().format(tip)
         //set result value
