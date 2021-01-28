@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         binding.calculateButton.setOnClickListener { calculateTip() }
         //check bundle values
         if (savedInstanceState != null) {
-            //check save  visibility a value
+            //check save visibility a value
             if (savedInstanceState.getBoolean("tip_amount_visible")) {
                 binding.tipResult.visibility = View.VISIBLE
                 binding.tipResult.text = savedInstanceState.getString("tip_amount")
@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     private fun calculateTip() {
 
         //get value of a editText and cast toSting, cuz view return Editable
-        val stringInTextField = binding.costOfService.text.toString()
+        val stringInTextField = binding.costOfServiceEditText?.text.toString()
         //get cost a value with null, cuz user can will enter empty a value
         val cost = stringInTextField.toDoubleOrNull()
         //return percent value and checked radiobutton
@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity() {
             tip = ceil(tip)
         displayTip(tip)
     }
+
     private fun displayTip(tip: Double) {
         //get formated value
         val formatedTip = NumberFormat.getCurrencyInstance().format(tip)
